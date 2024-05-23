@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memo App</title>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    .memo-form {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    #memo-input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    #add-memo-btn {
+        padding: 10px;
+        border: none;
+        background-color: #28a745;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    #add-memo-btn:hover {
+        background-color: #218838;
+    }
+
+    #memo-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    #memo-list li {
+        background-color: #e9ecef;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .delete-btn {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+    .delete-btn:hover {
+        background-color: #c82333;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Memo App</h1>
+        <div class="memo-form">
+            <input type="text" id="memo-input" placeholder="Write your memo here...">
+            <button id="add-memo-btn">Add Memo</button>
+        </div>
+        <ul id="memo-list"></ul>
+    </div>
+    <script>
+        const button = document.getElementById('add-memo-btn');
+        let memo_list = document.getElementById('memo-list');
+        let memo = document.getElementById('memo-input');
+        let arr="";
+        function memo_add() {
+            arr +=`<li>${memo.value}<button id="delete">삭제</button></li>`;
+            window.localStorage.setItem('memo', arr);
+            console.log(arr);
+            memo_list.innerHTML = `<ul id="memo-list">${arr}</ul>`;
+            memo.value = "";
+        }
+
+        memo_list.addEventListener('click',(event)=>{
+            if (event.target.id === "delete") {
+                event.target.parentElement.remove();
+                window.localStorage.setItem('memo', memo_list.outerHTML);
+            }
+        });
+
+        button.addEventListener('click',memo_add);
+
+        document.addEventListener("DOMContentLoaded",function(){
+            if (window.localStorage.length > 0) {
+                arr = window.localStorage.getItem('memo');
+                memo_list.innerHTML = `<ul id="memo-list">${arr}</ul>`;
+            }
+
+        });
+
+    </script>
+</body>
+</html>
